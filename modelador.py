@@ -1,5 +1,5 @@
 import gurobipy as gp
-from random import randint, choices
+from random import randint, choices, seed
 
 def modelador(n_ex, n_tec, t_mes, n='V1'):
     """Función que define el dominio de los conjuntos del problema.
@@ -10,8 +10,8 @@ def modelador(n_ex, n_tec, t_mes, n='V1'):
         -n    : Nombre del modelo (str). Default: V1. 
     Retorna un modelo m con nombre n. 
     """
-    m = gp.Model(n)
-    
+    m = gp.Model()
+    seed(20)
     ### Conjuntos ###
     
     # Procesos de extracción i in {1, ..., I}
@@ -64,6 +64,7 @@ def modelador(n_ex, n_tec, t_mes, n='V1'):
     v = m.addVars(I, T, vtype=gp.GRB.BINARY, name='v')
     
     ### Restricciones ###
+    m.update()
     
     # R1: Mantener o incrementar utilidades.
     m.addConstrs(gp.quicksum(cl[i] * pl[t] * y[i, h, t] - \
@@ -85,12 +86,14 @@ def modelador(n_ex, n_tec, t_mes, n='V1'):
     # R6: De usar más de un proceso en el horizonte de tiempo, no puede
     # ocurrir el proceso i1 despues del proceso i2.
     m.addConstrs(y[i, h, t + 1]
-                 <= 50000000 * (1 - y[k, h, t]) \
+                 <= 50000 * (1 - y[k, h, t]) \
                  for t in range(t_mes -1) for h in H for i in I for k in I if i < k)
     # R7: La ocurrencia de Y activa a X si la suma de los Y en todo el tiempo
     # es cero, entonces X será cero.
     m.addConstrs(gp.quicksum(y[i, h, t] for t in T) 
-                 <= 50000000 * x[i, h] for i in I for h in H)
+                 <= 50000 * x[i, h] for i in I for h in H)
+    m.addConstrs(gp.quicksum(y[i, h, t] for t in T) 
+                 >= x[i, h] for i in I for h in H)
     # R8: El proceso i tiene que durar el tiempo que demora su iteración
     m.addConstrs(v[i, t] 
                  == z[i, t + a[i]] for i in I for t in T if t + a[i] < t_mes)

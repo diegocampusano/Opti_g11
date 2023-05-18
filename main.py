@@ -8,7 +8,10 @@ def main(n_ex, n_tec, t_mes):
     modelo.update()
     modelo.setObjective(obj, gp.GRB.MINIMIZE)
     modelo.optimize()
-    modelo.printAttr('obj')
+    # imprime los coeficientes de las variables
+    # modelo.printAttr('obj')
+    # imprime los valores de las variables
+    modelo.printAttr('X')
     return
     
 if __name__ == "__main__":

@@ -1,0 +1,70 @@
+# resultado obtenido con seed(20), n_ex=5, n_tec=5, t_mes=36
+"""
+PS C:\Users\diego\Desktop\Opti_g11> python main.py
+Set parameter Username
+Academic license - for non-commercial use only - expires 2024-05-09
+Gurobi Optimizer version 10.0.1 build v10.0.1rc0 (win64)
+
+CPU model: 12th Gen Intel(R) Core(TM) i7-12650H, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 16 logical processors, using up to 16 threads
+
+Optimize a model with 2222 rows, 1285 columns and 11148 nonzeros
+Model fingerprint: 0x1b1e2ef5
+Variable types: 0 continuous, 1285 integer (1285 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+07]
+  Objective range  [3e+01, 2e+03]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+05]
+Found heuristic solution: objective 34093.000000
+Presolve removed 206 rows and 360 columns
+Presolve time: 0.01s
+Presolved: 2016 rows, 925 columns, 7150 nonzeros
+Variable types: 0 continuous, 925 integer (925 binary)
+Found heuristic solution: objective 18355.000000
+
+Root relaxation: objective 9.157000e+03, 59 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0    9157.0000000 9157.00000  0.00%     -    0s
+
+Explored 1 nodes (59 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 16 (of 16 available processors)
+
+Solution count 3: 9157 18355 34093
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 9.157000000000e+03, best bound 9.157000000000e+03, gap 0.0000%
+
+    Variable            X
+-------------------------
+      x[0,0]            1
+      x[0,1]            1
+      x[0,2]            1
+      x[0,3]            1
+      x[1,0]            1
+      x[1,1]            1
+      x[1,2]            1
+      x[1,4]            1
+      x[2,0]            1
+      x[2,1]            1
+      x[2,2]            1
+      x[2,3]            1
+      x[2,4]            1
+    y[3,0,1]            1
+    y[3,0,2]            1
+   y[3,0,12]            1
+    y[3,1,9]            1
+   y[3,1,30]            1
+   y[3,2,11]            1
+    y[3,3,6]            1
+   y[3,4,29]            1
+   y[4,1,31]            1
+   y[4,1,32]            1
+   y[4,3,10]            1
+   y[4,3,15]            1
+   y[4,3,28]            1
+   y[4,4,27]            1
+"""

@@ -1,16 +1,20 @@
 import gurobipy as gp
 from random import randint, choices, seed
 
-def modelador(n_ex, n_tec, t_mes, n='V1'):
+
+def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     """Función que define el dominio de los conjuntos del problema.
     Variables:
         -n_ex : Número de procesos de extracción (int).
         -n_tec: Número de tipos de tecnología (int).
         -t_mes: Horizonte de tiempo del problema, en meses (int).
+        -n_pl : Número de plantas de extracción de agua (int).
+        -n_m  : Número de métodos de transporte de agua (int). 
         -n    : Nombre del modelo (str). Default: V1. 
-    Retorna un modelo m con nombre n. 
+    Retorna una tupla compuesta por un modelo m con nombre n y la 
+    función objetivo. (m, obj). 
     """
-    m = gp.Model()
+    m = gp.Model(name=n)
     seed(20)
     ### Conjuntos ###
     
@@ -20,87 +24,97 @@ def modelador(n_ex, n_tec, t_mes, n='V1'):
     H = range(n_tec)
     # Mes transcurrido t in {1, ..., T}
     T = range(t_mes)
+    # Plantas para extraer agua p in {1, ..., P}
+    P = range(n_pl)
+    # Métodos para transportar el agua planta->salar m in {1, ..., M}
+    M = range(n_m)
     
     ### Parámetros ###
-
-    # Costo de implementar un proceso en la extracción de Litio que depende
-    # del proceso i según la tecnología h aplicada.
-    c  = {(i, h): randint(500, 1000) for i in I for h in H}
-    # Costo de mantención del proceso i segun la tecnología h aplicada en 
-    # el tiempo t
-    ct = {(i, h, t): choices([0, 1], [.7, .3])[0] for i in I for h in H for t in T}
-    # Toneladas de carbonato de litio que produce el proceso i
-    cl = [randint(4000, 5000) for i in I]
-    # Cantidad de agua que ocupa cada proceso i que depende de la tecnología
-    # h en el mes t
-    q  = {(i, h, t): randint(1000, 2000) for i in I for h in H for t in T}
-    # Tiempo que demora una iteración del proceso i en estar listo
-    a  = [randint(5, 24) for i in I]
+    # Costo de extraer 1000L de agua de la planta p:
+    c_ag    = [p * 1000 for p in P]
+    # Costo de transportar 1000L de agua desde la planta p hasta el salar.
+    c_tr    = {(p, m): m * 500 for p in P for m in M}
+    # Costo de adquisición de la tecnología h para el proceso i
+    c       = {(i, h): randint(500, 1000) for i in I for h in H}
+    # Costo de usar el proceso i con la tecnología h en el tiempo t
+    ct      = {(i, h, t): choices([0, 1], [.7, .3])[0] for i in I for h in H for t in T}
+    # Cantidad máxima de agua que se puede extraer de la planta p en un mes
+    cmax_ag = [p for p in P]
+    # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
+    tech_ag = {(i, h): 700 for i in I for h in H}
+    # Cantidad de agua que se retorna al salar al terminar el proceso con
+    # la tecnología h en el tiempo t.
+    ret_ag  = {(i, h, t): randint(0, 1000) for i in I for h in H for t in T}
+    # Toneladas de carbonato de litio que produce el proceso i con la tecnología h
+    cl      = {(i, h): randint(4000, 5000) for i in I for h in H}
     # Huella ambiental del proceso i con la tecnología h
-    ha = {(i,h): randint(0, 1000) for i in I for h in H}
-    # Demanda total del litio en el mes t
-    dt = [randint(4000, 40000) for t in T]
-    # Cantidad de agua que se retorna al ambiente al terminar el proceso
-    # usando la tecnología h
-    cr = {(i, h, t): randint(0, 1000) for i in I for h in H for t in T}
-    # Margen de utilidades en el horizonte de tiempo
-    u  = 500000
-    # Precio de una tonelada de carbonato de litio en el mes t
-    pl = [randint(1000, 10000) for t in T]
-    # Límite ambiental de contaminación que se permite por mes
-    la = 500000
+    ha      = {(i, h): randint(0, 1000) for i in I for h in H}
+    # Huella ambiental máxima que puedo liberar al terminar el horizonte de tiempo.
+    ha_max  = 500000
+    # Demanda total del litio al fin del horizonte de tiempo
+    dt      = randint(10000, 50000)
+    # Tiempo que demora una iteración del proceso i en estar listo con la tecnología h.
+    a       = [randint(5, 24) for i in I for h in H]
+    # Orden de procesos, 1 si el proceso i debe ocurrir antes del proceso j
+    order   = {(i, j): choices([0, 1], [.7, .3])[0] for i in I for j in I if i != j}
     
     ### Variables ###
-    # Estás variables son 1 si cumplen con su descripción, 0 en otro caso.
+    
+    # Estas variables son continuas
+    
+    # Cantidad de agua que saco de la planta p en el mes t
+    q_ag   = m.addVars(P, T, name='Cantidad de agua de planta')
+    # Cantidad de agua que saco del salar al final del horizonte de tiempo
+    q_ag_s = m.addVar(name='Cantidad de agua retirada')
+    # Mes en que se inicia el proceso i con la tecnología h
+    start  = m.addVars(I, H, name='Instante de inicio del proceso')
+    
+    # Estas variables son 1 si cumplen con su descripción, 0 en otro caso.
     
     # Variable binaria que indica si uso el proceso i con la tecnología h.
-    x = m.addVars(I, H, vtype=gp.GRB.BINARY, name='x')
+    x = m.addVars(I, H, vtype=gp.GRB.BINARY, name='Compra de tecnología')
     # Variable binaria que indica si uso el proceso i con la tecnología h
     # en el mes t.
-    y = m.addVars(I, H, T, vtype=gp.GRB.BINARY, name='y')
-    # Variable binaria que indica si el proceso i termina en el mes t.
-    z = m.addVars(I, T, vtype=gp.GRB.BINARY, name='z')
-    # Variable binaria que indica si el proceso i inicia en el mes t.
-    v = m.addVars(I, T, vtype=gp.GRB.BINARY, name='v')
+    y = m.addVars(I, H, T, vtype=gp.GRB.BINARY, name='Uso de tecnología en el mes')
+    # Variable binaria que indica si uso el transporte m para agua de la planta p
+    z = m.addVars(P, M, vtype=gp.GRB.BINARY, name='Uso de transporte de agua')
     
     ### Restricciones ###
     m.update()
     
-    # R1: Mantener o incrementar utilidades.
-    m.addConstrs(gp.quicksum(cl[i] * pl[t] * y[i, h, t] - \
-                          (c[i, h] * x[i, h] + ct[i, h, t] * y[i, h, t]) 
-                          for i in I for h in H) 
-                          >= u  for t in T)
-    # R2: Suplir la demanda cuando el proceso i termina.
-    m.addConstrs(gp.quicksum(cl[i] * y[i, h, t] for i in I for h in H)
-                 >= dt[t] * gp.quicksum(z[k, t] for k in I) for t in T)
+    # R1: No superar la cantidad máxima de agua que puedo extraer de una planta.
+    m.addConstrs(q_ag[p, t] <= cmax_ag[p] for p in P for t in T)
+    # R2: Agua sacada del salar debe ser la misma que la retornada en el horizonte de tiempo:
+    m.addConstr(gp.quicksum(y[i, h, t] * ret_ag[i, h, t] for i in I for h in H for t in T) - q_ag_s >= 0)
     # R3: No superar cota ambiental de contaminación
-    m.addConstrs(gp.quicksum(ha[i, h] * y[i, h, t] for i in I for h in H)
-                 <= la  for t in T)
-    # R4: No se puede aplicar más de una tecnología h en un mismo proceso i
-    m.addConstrs(gp.quicksum(y[i, h, t] for h in H) 
-                 <= 1 for i in I for t in T)
-    # R5: Tiempo de producción no puedo superar el horizonte de tiempo.
-    m.addConstrs(gp.quicksum(z[i, t] * a[i] for t in T) 
-                 <= t_mes for i in I for h in H)
-    # R6: De usar más de un proceso en el horizonte de tiempo, no puede
-    # ocurrir el proceso i1 despues del proceso i2.
-    m.addConstrs(y[i, h, t + 1]
-                 <= 50000 * (1 - y[k, h, t]) \
-                 for t in range(t_mes -1) for h in H for i in I for k in I if i < k)
-    # R7: La ocurrencia de Y activa a X si la suma de los Y en todo el tiempo
-    # es cero, entonces X será cero.
-    m.addConstrs(gp.quicksum(y[i, h, t] for t in T) 
-                 <= 50000 * x[i, h] for i in I for h in H)
-    m.addConstrs(gp.quicksum(y[i, h, t] for t in T) 
-                 >= x[i, h] for i in I for h in H)
-    # R8: El proceso i tiene que durar el tiempo que demora su iteración
-    m.addConstrs(v[i, t] 
-                 == z[i, t + a[i]] for i in I for t in T if t + a[i] < t_mes)
+    m.addConstr(ha_max - gp.quicksum(y[i, h ,t] * ha[i, h] for i in I for h in H for t in T) >= 0)
+    # R4: Suplir la demanda de Litio
+    m.addConstr(dt - gp.quicksum(y[i, h, t] * cl[i, h] for i in I for h in H for t in T) <= 0)
+    # R5: Tener requerimiento mínimo de agua para cada proceso i con tecnología h
+    m.addConstr(q_ag_s + gp.quicksum(q_ag[p, t] for p in P for t in T) 
+                 >= gp.quicksum(y[i, h, t] * tech_ag[i, h] for i in I for h in H for t in T))
+    # R6: Mantener secuencialidad de los procesos:
+#     m.addConstrs(start[i, h] <= (start[j, h] + gp.quicksum(x[j, h] * a[j, h] for h in H)) \
+#                  * order[i, j] for i in I for for j in I)
+    # R7: Un proceso solo puede ocupar una tecnología a la vez
+    m.addConstrs(gp.quicksum(y[i, h, t] for h in H) <= 1 for i in I for t in T)
+    # R8: Se realiza un proceso a la vez
+    m.addConstrs(gp.quicksum(y[i, h, t] for i in I for h in H) <= 1 for t in T)
+    # R9: Relación entre blabla ver informe
+    m.addConstrs(gp.quicksum(y[i, h, t] for t in T) <= 500000 * x[i, h] for i in I for h in H)
+    m.addConstrs(gp.quicksum(y[i, h, t] for t in T) >= x[i, h] for i in I for h in H)
+    # Naturaleza de las variables:
+    m.addConstr(q_ag_s >= 0)
+    m.addConstrs(q_ag[p, t] >= 0 for p in P for t in T)
+    m.addConstrs(start[i, h] >= 0  for i in I for h in H)
     
     ### Función objetivo ###
-    obj = gp.quicksum((q[i, h, t] - cr[i, h, t]) * y[i, h, t] \
-                 for i in I for h in H for t in T)
+    
+    costo_agua = gp.quicksum(q_ag[p, t] * c_ag[p] for p in P for t in T) \
+                 + gp.quicksum(z[p, m] * c_tr[p, m] for p in P for m in M)
+    costo_tec  = gp.quicksum(x[i, h] * c[i, h] for i in I for h in H) \
+                 + gp.quicksum(y[i, h, t] * ct[i, h, t] for i in I for h in H for t in T)
+    obj = costo_agua + costo_tec
     
     return m, obj
   

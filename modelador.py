@@ -72,10 +72,10 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # Estas variables son 1 si cumplen con su descripción, 0 en otro caso.
     
     # Variable binaria que indica si uso el proceso i con la tecnología h.
-    x = m.addVars(I, H, vtype=gp.GRB.BINARY, name='Compra de tecnología')
+    x = m.addVars(I, H, vtype=gp.GRB.BINARY, name='Compra de tecnologia')
     # Variable binaria que indica si uso el proceso i con la tecnología h
     # en el mes t.
-    y = m.addVars(I, H, T, vtype=gp.GRB.BINARY, name='Uso de tecnología en el mes')
+    y = m.addVars(I, H, T, vtype=gp.GRB.BINARY, name='Uso de tecnologia en el mes')
     # Variable binaria que indica si uso el transporte m para agua de la planta p
     z = m.addVars(P, M, vtype=gp.GRB.BINARY, name='Uso de transporte de agua')
     

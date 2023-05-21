@@ -30,31 +30,46 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     M = range(n_m)
     
     ### Parámetros ###
+    # archivo parametros Cote:
+    # https://docs.google.com/document/d/16tpIgbT18wJ0YU0W5X2hlRgIwC1qytQKJiMMTKI5OdM/edit?usp=sharing
+    # (Es una copia, no el original por lo que podría no estar actualizado)
     # Costo de extraer 1000L de agua de la planta p:
-    c_ag    = [p * 1000 for p in P]
+    # No se en que moneda está el valor 16507867 -Diego
+    c_ag    = [16507867 for p in P]
     # Costo de transportar 1000L de agua desde la planta p hasta el salar.
+    # POR HACER
     c_tr    = {(p, m): m * 500 for p in P for m in M}
     # Costo de adquisición de la tecnología h para el proceso i
+    # POR HACER
     c       = {(i, h): randint(500, 1000) for i in I for h in H}
     # Costo de usar el proceso i con la tecnología h en el tiempo t
+    # POR HACER
     ct      = {(i, h, t): choices([0, 1], [.7, .3])[0] for i in I for h in H for t in T}
     # Cantidad máxima de agua que se puede extraer de la planta p en un mes
+    # POR HACER
     cmax_ag = [p for p in P]
     # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
+    # POR HACER
     tech_ag = {(i, h): 700 for i in I for h in H}
     # Cantidad de agua que se retorna al salar al terminar el proceso con
     # la tecnología h en el tiempo t.
-    ret_ag  = {(i, h, t): randint(0, 1000) for i in I for h in H for t in T}
-    # Toneladas de carbonato de litio que produce el proceso i con la tecnología h
-    cl      = {(i, h): randint(4000, 5000) for i in I for h in H}
+    # medido en LITROS
+    ret_ag  = {(i, h, t): randint(0, 4780000000) for i in I for h in H for t in T}
+    # Cantidad de carbonato de litio que produce el proceso i con la tecnología h
+    # medido en TONELADAS
+    cl      = {(i, h): randint(1775, 78182) for i in I for h in H}
     # Huella ambiental del proceso i con la tecnología h
-    ha      = {(i, h): randint(0, 1000) for i in I for h in H}
+    # medido en KILOGRAMOS (de CO2) POR TONELADA DE CARBONATO DE LITIO
+    ha      = {(i, h): 4022 for i in I for h in H}
     # Huella ambiental máxima que puedo liberar al terminar el horizonte de tiempo.
-    ha_max  = 500000
+    # medido en KILOGRAMOS (de CO2) POR TONELADA DE CARBONATO DE LITIO
+    ha_max  = 6650 * t_mes
     # Demanda total del litio al fin del horizonte de tiempo
-    dt      = randint(10000, 50000)
+    # medido en TONELADAS
+    dt      = 323000
     # Tiempo que demora una iteración del proceso i en estar listo con la tecnología h.
-    a       = [randint(5, 24) for i in I for h in H]
+    # medido en MESES
+    a       = [randint(12, 18) for i in I for h in H]
     # Orden de procesos, 1 si el proceso i debe ocurrir antes del proceso j
     order   = {(i, j): choices([0, 1], [.7, .3])[0] for i in I for j in I if i != j}
     

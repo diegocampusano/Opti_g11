@@ -37,19 +37,20 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # No se en que moneda está el valor 16507867 -Diego
     c_ag    = [16507867 for p in P]
     # Costo de transportar 1000L de agua desde la planta p hasta el salar.
-    # POR HACER
-    c_tr    = {(p, m): m * 500 for p in P for m in M}
+    # Los valores están en la misma moneda que el parámetro anterior
+    # tome el valor mas alto y el mas bajo de entre los 5 valores para generar los numeros
+    c_tr    = {(p, m): randint(1738501, 6438591) for p in P for m in M}
     # Costo de adquisición de la tecnología h para el proceso i
-    # POR HACER
+    # No entendí la tabla del doc, asique dejé esta linea tal como estaba
     c       = {(i, h): randint(500, 1000) for i in I for h in H}
     # Costo de usar el proceso i con la tecnología h en el tiempo t
-    # POR HACER
+    # No entendí la tabla del doc, asique dejé esta linea tal como estaba
     ct      = {(i, h, t): choices([0, 1], [.7, .3])[0] for i in I for h in H for t in T}
     # Cantidad máxima de agua que se puede extraer de la planta p en un mes
-    # POR HACER
-    cmax_ag = [p for p in P]
+    # medido en LITROS
+    cmax_ag = [100000 for p in P]
     # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
-    # POR HACER
+    # No está especificado, asique dejé esta linea tal como estaba
     tech_ag = {(i, h): 700 for i in I for h in H}
     # Cantidad de agua que se retorna al salar al terminar el proceso con
     # la tecnología h en el tiempo t.

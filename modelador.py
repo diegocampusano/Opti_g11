@@ -41,17 +41,17 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # tome el valor mas alto y el mas bajo de entre los 5 valores para generar los numeros
     c_tr    = {(p, m): randint(1738501, 6438591) for p in P for m in M}
     # Costo de adquisición de la tecnología h para el proceso i
-    # No entendí la tabla del doc, asique dejé esta linea tal como estaba
-    c       = {(i, h): randint(500, 1000) for i in I for h in H}
+    # Medido en PESOS CHILENOS
+    c       = {(i, h): randint(26616344, 88133078) for i in I for h in H}
     # Costo de usar el proceso i con la tecnología h en el tiempo t
-    # No entendí la tabla del doc, asique dejé esta linea tal como estaba
-    ct      = {(i, h, t): choices([0, 1], [.7, .3])[0] for i in I for h in H for t in T}
+    # # Medido en PESOS CHILENOS POR GRAMO DE LITIO
+    ct      = {(i, h, t): randint(131619, 281791) for i in I for h in H for t in T}
     # Cantidad máxima de agua que se puede extraer de la planta p en un mes
     # medido en LITROS
     cmax_ag = [100000 for p in P]
     # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
     # No está especificado, asique dejé esta linea tal como estaba
-    tech_ag = {(i, h): 700 for i in I for h in H}
+    tech_ag = {(i, h): 100000 for i in I for h in H}
     # Cantidad de agua que se retorna al salar al terminar el proceso con
     # la tecnología h en el tiempo t.
     # medido en LITROS

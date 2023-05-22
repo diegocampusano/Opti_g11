@@ -1,63 +1,56 @@
-Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (win64)
+Set parameter Username
+Academic license - for non-commercial use only - expires 2024-05-09
+Gurobi Optimizer version 10.0.1 build v10.0.1rc0 (win64)
 
-CPU model: AMD Ryzen 7 2700X Eight-Core Processor, instruction set [SSE2|AVX|AVX2]
-Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
+CPU model: 12th Gen Intel(R) Core(TM) i7-12650H, instruction set [SSE2|AVX|AVX2]
+Thread count: 10 physical cores, 16 logical processors, using up to 16 threads
 
-Optimize a model with 512 rows, 1068 columns and 7600 nonzeros
-Model fingerprint: 0x4ff08af4
+Optimize a model with 512 rows, 1068 columns and 7602 nonzeros
+Model fingerprint: 0xc615546d
 Variable types: 134 continuous, 934 integer (934 binary)
 Coefficient statistics:
-  Matrix range     [1e+00, 5e+05]
-  Objective range  [1e+00, 2e+03]
+  Matrix range     [1e+00, 5e+09]
+  Objective range  [1e+00, 2e+07]
   Bounds range     [1e+00, 1e+00]
-  RHS range        [1e+00, 5e+05]
-Presolve removed 423 rows and 140 columns
-Presolve time: 0.01s
-Presolved: 89 rows, 928 columns, 5451 nonzeros
-Variable types: 2 continuous, 926 integer (925 binary)
-Found heuristic solution: objective 2429.0000000
-Found heuristic solution: objective 963.0000000
+  RHS range        [1e+00, 3e+05]
+Warning: Model contains large matrix coefficients
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+Found heuristic solution: objective 9.244406e+10
+Presolve removed 425 rows and 143 columns
+Presolve time: 0.02s
+Presolved: 87 rows, 925 columns, 3650 nonzeros
+Found heuristic solution: objective 3587.0000000
+Variable types: 0 continuous, 925 integer (925 binary)
 
-Root relaxation: objective 4.397143e+01, 59 iterations, 0.00 seconds (0.00 work units)
+Root relaxation: objective 6.564954e+01, 50 iterations, 0.00 seconds (0.00 work units)
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 
-     0     0   43.97143    0    1  963.00000   43.97143  95.4%     -    0s
-H    0     0                     513.0000000   43.97143  91.4%     -    0s
-     0     0   43.97143    0    1  513.00000   43.97143  91.4%     -    0s
+     0     0   65.64954    0    2 3587.00000   65.64954  98.2%     -    0s
+H    0     0                     552.0000000   65.64954  88.1%     -    0s
+H    0     0                     541.0000000   65.64954  87.9%     -    0s
+     0     0   65.64954    0    2  541.00000   65.64954  87.9%     -    0s
 
-Explored 1 nodes (59 simplex iterations) in 0.03 seconds (0.02 work units)
+Explored 1 nodes (50 simplex iterations) in 0.05 seconds (0.01 work units)
 Thread count was 16 (of 16 available processors)
 
-Solution count 3: 513 963 2429 
+Solution count 4: 541 552 3587 9.24441e+10
 
 Optimal solution found (tolerance 1.00e-04)
-Best objective 5.130000000000e+02, best bound 5.130000000000e+02, gap 0.0000%
+Best objective 5.410000000000e+02, best bound 5.410000000000e+02, gap 0.0000%
 
-    Variable            X 
+    Variable            X
 -------------------------
-
----------------------------------------------------------------------------
-UnicodeDecodeError                        Traceback (most recent call last)
-Cell In [35], line 2
-      1 if __name__ == "__main__":
-----> 2     main(n_ex=5, n_tec=5, t_mes=36, n_pl=3, n_m=3, n='Restricciones Entrega 2 V1')
-
-Cell In [34], line 14, in main(n_ex, n_tec, t_mes, n_pl, n_m, n)
-     10     modelo.optimize()
-     11     # imprime los coeficientes de las variables
-     12 #     modelo.printAttr('obj')
-     13     # imprime los valores de las variables
----> 14     modelo.printAttr('X')
-     15     return
-
-File src\gurobipy\model.pxi:2511, in gurobipy.Model.printAttr()
-
-File src\gurobipy\model.pxi:1939, in gurobipy.Model.getAttr()
-
-File src\gurobipy\attrutil.pxi:174, in gurobipy.__gettypedattrlist()
-
-File src\gurobipy\extern.pxi:19, in gurobipy.__bytestostring()
-
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0xed in position 18: invalid continuation byte
+Cantidad de agua retirada  2.45144e+10
+Compra de tecnologia[4,4]            1
+Uso de tecnologia en el mes[4,4,12]            1
+Uso de tecnologia en el mes[4,4,14]            1
+Uso de tecnologia en el mes[4,4,17]            1
+Uso de tecnologia en el mes[4,4,19]            1
+Uso de tecnologia en el mes[4,4,20]            1
+Uso de tecnologia en el mes[4,4,21]            1
+Uso de tecnologia en el mes[4,4,24]            1
+Uso de tecnologia en el mes[4,4,30]            1
+Uso de tecnologia en el mes[4,4,32]            1

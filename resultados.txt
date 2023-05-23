@@ -1,56 +1,320 @@
-Set parameter Username
-Academic license - for non-commercial use only - expires 2024-05-09
-Gurobi Optimizer version 10.0.1 build v10.0.1rc0 (win64)
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (win64)
 
-CPU model: 12th Gen Intel(R) Core(TM) i7-12650H, instruction set [SSE2|AVX|AVX2]
-Thread count: 10 physical cores, 16 logical processors, using up to 16 threads
+CPU model: AMD Ryzen 7 2700X Eight-Core Processor, instruction set [SSE2|AVX|AVX2]
+Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
 
-Optimize a model with 512 rows, 1068 columns and 7602 nonzeros
-Model fingerprint: 0xc615546d
-Variable types: 134 continuous, 934 integer (934 binary)
+Optimize a model with 969 rows, 1303 columns and 9129 nonzeros
+Model fingerprint: 0xe91a8959
+Variable types: 265 continuous, 1038 integer (1038 binary)
 Coefficient statistics:
-  Matrix range     [1e+00, 5e+09]
-  Objective range  [1e+00, 2e+07]
+  Matrix range     [1e+00, 5e+05]
+  Objective range  [2e+06, 4e+09]
   Bounds range     [1e+00, 1e+00]
-  RHS range        [1e+00, 3e+05]
-Warning: Model contains large matrix coefficients
+  RHS range        [1e+00, 5e+06]
+Warning: Model contains large objective coefficients
          Consider reformulating model or setting NumericFocus parameter
          to avoid numerical issues.
-Found heuristic solution: objective 9.244406e+10
-Presolve removed 425 rows and 143 columns
-Presolve time: 0.02s
-Presolved: 87 rows, 925 columns, 3650 nonzeros
-Found heuristic solution: objective 3587.0000000
-Variable types: 0 continuous, 925 integer (925 binary)
+Presolve removed 843 rows and 267 columns
+Presolve time: 0.01s
+Presolved: 126 rows, 1036 columns, 3115 nonzeros
+Variable types: 1 continuous, 1035 integer (1023 binary)
+Found heuristic solution: objective 5.886307e+14
 
-Root relaxation: objective 6.564954e+01, 50 iterations, 0.00 seconds (0.00 work units)
-
-    Nodes    |    Current Node    |     Objective Bounds      |     Work
- Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
-
-     0     0   65.64954    0    2 3587.00000   65.64954  98.2%     -    0s
-H    0     0                     552.0000000   65.64954  88.1%     -    0s
-H    0     0                     541.0000000   65.64954  87.9%     -    0s
-     0     0   65.64954    0    2  541.00000   65.64954  87.9%     -    0s
-
-Explored 1 nodes (50 simplex iterations) in 0.05 seconds (0.01 work units)
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.02 work units)
 Thread count was 16 (of 16 available processors)
 
-Solution count 4: 541 552 3587 9.24441e+10
+Solution count 1: 5.88631e+14 
 
 Optimal solution found (tolerance 1.00e-04)
-Best objective 5.410000000000e+02, best bound 5.410000000000e+02, gap 0.0000%
+Best objective 5.886306972766e+14, best bound 5.886304338601e+14, gap 0.0000%
 
-    Variable            X
+    Variable            X 
 -------------------------
-Cantidad de agua retirada  2.45144e+10
-Compra de tecnologia[4,4]            1
-Uso de tecnologia en el mes[4,4,12]            1
-Uso de tecnologia en el mes[4,4,14]            1
-Uso de tecnologia en el mes[4,4,17]            1
-Uso de tecnologia en el mes[4,4,19]            1
-Uso de tecnologia en el mes[4,4,20]            1
-Uso de tecnologia en el mes[4,4,21]            1
-Uso de tecnologia en el mes[4,4,24]            1
-Uso de tecnologia en el mes[4,4,30]            1
-Uso de tecnologia en el mes[4,4,32]            1
+Cantidad de agua de planta[0,0]      34028.5 
+Cantidad de agua de planta[0,1]      34028.4 
+Cantidad de agua de planta[0,2]      34028.5 
+Cantidad de agua de planta[0,3]      34028.2 
+Cantidad de agua de planta[0,4]      34028.7 
+Cantidad de agua de planta[0,5]      34028.2 
+Cantidad de agua de planta[0,6]      34028.8 
+Cantidad de agua de planta[0,7]      34029.1 
+Cantidad de agua de planta[0,8]      34028.1 
+Cantidad de agua de planta[0,9]      34028.4 
+Cantidad de agua de planta[0,10]      34028.4 
+Cantidad de agua de planta[0,11]      34029.8 
+Cantidad de agua de planta[0,12]      34027.9 
+Cantidad de agua de planta[0,13]      34028.8 
+Cantidad de agua de planta[0,14]      34029.4 
+Cantidad de agua de planta[0,15]      34028.1 
+Cantidad de agua de planta[0,16]      34028.5 
+Cantidad de agua de planta[0,17]      34028.5 
+Cantidad de agua de planta[0,18]      34029.2 
+Cantidad de agua de planta[0,19]      34028.8 
+Cantidad de agua de planta[0,20]      34027.3 
+Cantidad de agua de planta[0,21]      34030.2 
+Cantidad de agua de planta[0,22]      34029.1 
+Cantidad de agua de planta[0,23]      34029.3 
+Cantidad de agua de planta[0,24]      34028.9 
+Cantidad de agua de planta[0,25]      34029.8 
+Cantidad de agua de planta[0,26]      34027.6 
+Cantidad de agua de planta[0,27]      34030.7 
+Cantidad de agua de planta[0,28]      34029.6 
+Cantidad de agua de planta[0,29]      34029.3 
+Cantidad de agua de planta[0,30]      34029.6 
+Cantidad de agua de planta[0,31]        34030 
+Cantidad de agua de planta[0,32]      34029.4 
+Cantidad de agua de planta[0,33]      34029.2 
+Cantidad de agua de planta[0,34]      34029.3 
+Cantidad de agua de planta[0,35]      34028.9 
+Cantidad de agua de planta[0,36]      34027.5 
+Cantidad de agua de planta[0,37]        34029 
+Cantidad de agua de planta[0,38]      34028.6 
+Cantidad de agua de planta[0,39]      34029.4 
+Cantidad de agua de planta[0,40]      34029.7 
+Cantidad de agua de planta[0,41]      34029.8 
+Cantidad de agua de planta[0,42]      34029.9 
+Cantidad de agua de planta[0,43]      34029.2 
+Cantidad de agua de planta[0,44]      34029.3 
+Cantidad de agua de planta[0,45]      34029.5 
+Cantidad de agua de planta[0,46]      34028.2 
+Cantidad de agua de planta[0,47]        34029 
+Cantidad de agua de planta[0,48]      34030.5 
+Cantidad de agua de planta[0,49]      34029.2 
+Cantidad de agua de planta[0,50]      34028.7 
+Cantidad de agua de planta[0,51]      34028.9 
+Cantidad de agua de planta[0,52]      34029.1 
+Cantidad de agua de planta[0,53]      34029.5 
+Cantidad de agua de planta[0,54]      34028.5 
+Cantidad de agua de planta[0,55]      34029.2 
+Cantidad de agua de planta[0,56]      34029.8 
+Cantidad de agua de planta[0,57]      34028.8 
+Cantidad de agua de planta[0,58]      34029.4 
+Cantidad de agua de planta[0,59]      34029.8 
+Cantidad de agua de planta[0,60]      34028.1 
+Cantidad de agua de planta[0,61]      34027.7 
+Cantidad de agua de planta[0,62]      34029.5 
+Cantidad de agua de planta[0,63]      34028.3 
+Cantidad de agua de planta[0,64]      34029.2 
+Cantidad de agua de planta[0,65]      34028.7 
+Cantidad de agua de planta[0,66]      34028.7 
+Cantidad de agua de planta[0,67]        34028 
+Cantidad de agua de planta[0,68]      34028.1 
+Cantidad de agua de planta[0,69]      34029.5 
+Cantidad de agua de planta[0,70]      34028.7 
+Cantidad de agua de planta[0,71]      34028.8 
+Cantidad de agua de planta[0,72]      34027.7 
+Cantidad de agua de planta[0,73]      34029.8 
+Cantidad de agua de planta[0,74]      34030.1 
+Cantidad de agua de planta[0,75]      34029.4 
+Cantidad de agua de planta[0,76]      34028.2 
+Cantidad de agua de planta[0,77]      34029.8 
+Cantidad de agua de planta[0,78]      34029.3 
+Cantidad de agua de planta[0,79]      34029.6 
+Cantidad de agua de planta[0,80]      34027.9 
+Cantidad de agua de planta[0,81]      34029.1 
+Cantidad de agua de planta[0,82]      34029.7 
+Cantidad de agua de planta[0,83]      34028.9 
+Cantidad de agua de planta[1,0]       192080 
+Cantidad de agua de planta[1,1]       192080 
+Cantidad de agua de planta[1,2]       192080 
+Cantidad de agua de planta[1,3]       192080 
+Cantidad de agua de planta[1,4]       192080 
+Cantidad de agua de planta[1,5]       192080 
+Cantidad de agua de planta[1,6]       192080 
+Cantidad de agua de planta[1,7]       192080 
+Cantidad de agua de planta[1,8]       192080 
+Cantidad de agua de planta[1,9]       192080 
+Cantidad de agua de planta[1,10]       192080 
+Cantidad de agua de planta[1,11]       192080 
+Cantidad de agua de planta[1,12]       192080 
+Cantidad de agua de planta[1,13]       192080 
+Cantidad de agua de planta[1,14]       192080 
+Cantidad de agua de planta[1,15]       192080 
+Cantidad de agua de planta[1,16]       192080 
+Cantidad de agua de planta[1,17]       192080 
+Cantidad de agua de planta[1,18]       192080 
+Cantidad de agua de planta[1,19]       192080 
+Cantidad de agua de planta[1,20]       192080 
+Cantidad de agua de planta[1,21]       192080 
+Cantidad de agua de planta[1,22]       192080 
+Cantidad de agua de planta[1,23]       192080 
+Cantidad de agua de planta[1,24]       192080 
+Cantidad de agua de planta[1,25]       192080 
+Cantidad de agua de planta[1,26]       192080 
+Cantidad de agua de planta[1,27]       192080 
+Cantidad de agua de planta[1,28]       192080 
+Cantidad de agua de planta[1,29]       192080 
+Cantidad de agua de planta[1,30]       192080 
+Cantidad de agua de planta[1,31]       192080 
+Cantidad de agua de planta[1,32]       192080 
+Cantidad de agua de planta[1,33]       192080 
+Cantidad de agua de planta[1,34]       192080 
+Cantidad de agua de planta[1,35]       192080 
+Cantidad de agua de planta[1,36]       192080 
+Cantidad de agua de planta[1,37]       192080 
+Cantidad de agua de planta[1,38]       192080 
+Cantidad de agua de planta[1,39]       192080 
+Cantidad de agua de planta[1,40]       192080 
+Cantidad de agua de planta[1,41]       192080 
+Cantidad de agua de planta[1,42]       192080 
+Cantidad de agua de planta[1,43]       192080 
+Cantidad de agua de planta[1,44]       192080 
+Cantidad de agua de planta[1,45]       192080 
+Cantidad de agua de planta[1,46]       192080 
+Cantidad de agua de planta[1,47]       192080 
+Cantidad de agua de planta[1,48]       192080 
+Cantidad de agua de planta[1,49]       192080 
+Cantidad de agua de planta[1,50]       192080 
+Cantidad de agua de planta[1,51]       192080 
+Cantidad de agua de planta[1,52]       192080 
+Cantidad de agua de planta[1,53]       192080 
+Cantidad de agua de planta[1,54]       192080 
+Cantidad de agua de planta[1,55]       192080 
+Cantidad de agua de planta[1,56]       192080 
+Cantidad de agua de planta[1,57]       192080 
+Cantidad de agua de planta[1,58]       192080 
+Cantidad de agua de planta[1,59]       192080 
+Cantidad de agua de planta[1,60]       192080 
+Cantidad de agua de planta[1,61]       192080 
+Cantidad de agua de planta[1,62]       192080 
+Cantidad de agua de planta[1,63]       192080 
+Cantidad de agua de planta[1,64]       192080 
+
+Cantidad de agua de planta[1,65]       192080 
+Cantidad de agua de planta[1,66]       192080 
+Cantidad de agua de planta[1,67]       192080 
+Cantidad de agua de planta[1,68]       192080 
+Cantidad de agua de planta[1,69]       192080 
+Cantidad de agua de planta[1,70]       192080 
+Cantidad de agua de planta[1,71]       192080 
+Cantidad de agua de planta[1,72]       192080 
+Cantidad de agua de planta[1,73]       192080 
+Cantidad de agua de planta[1,74]       192080 
+Cantidad de agua de planta[1,75]       192080 
+Cantidad de agua de planta[1,76]       192080 
+Cantidad de agua de planta[1,77]       192080 
+Cantidad de agua de planta[1,78]       192080 
+Cantidad de agua de planta[1,79]       192080 
+Cantidad de agua de planta[1,80]       192080 
+Cantidad de agua de planta[1,81]       192080 
+Cantidad de agua de planta[1,82]       192080 
+Cantidad de agua de planta[1,83]       192080 
+Cantidad de agua de planta[2,0]       191576 
+Cantidad de agua de planta[2,1]       191576 
+Cantidad de agua de planta[2,2]       191576 
+Cantidad de agua de planta[2,3]       191576 
+Cantidad de agua de planta[2,4]       191576 
+Cantidad de agua de planta[2,5]       191576 
+Cantidad de agua de planta[2,6]       191576 
+Cantidad de agua de planta[2,7]       191576 
+Cantidad de agua de planta[2,8]       191576 
+Cantidad de agua de planta[2,9]       191576 
+Cantidad de agua de planta[2,10]       191576 
+Cantidad de agua de planta[2,11]       191576 
+Cantidad de agua de planta[2,12]       191576 
+Cantidad de agua de planta[2,13]       191576 
+Cantidad de agua de planta[2,14]       191576 
+Cantidad de agua de planta[2,15]       191576 
+Cantidad de agua de planta[2,16]       191576 
+Cantidad de agua de planta[2,17]       191576 
+Cantidad de agua de planta[2,18]       191576 
+Cantidad de agua de planta[2,19]       191576 
+Cantidad de agua de planta[2,20]       191576 
+Cantidad de agua de planta[2,21]       191576 
+Cantidad de agua de planta[2,22]       191576 
+Cantidad de agua de planta[2,23]       191576 
+Cantidad de agua de planta[2,24]       191576 
+Cantidad de agua de planta[2,25]       191576 
+Cantidad de agua de planta[2,26]       191576 
+Cantidad de agua de planta[2,27]       191576 
+Cantidad de agua de planta[2,28]       191576 
+Cantidad de agua de planta[2,29]       191576 
+Cantidad de agua de planta[2,30]       191576 
+Cantidad de agua de planta[2,31]       191576 
+Cantidad de agua de planta[2,32]       191576 
+Cantidad de agua de planta[2,33]       191576 
+Cantidad de agua de planta[2,34]       191576 
+Cantidad de agua de planta[2,35]       191576 
+Cantidad de agua de planta[2,36]       191576 
+Cantidad de agua de planta[2,37]       191576 
+Cantidad de agua de planta[2,38]       191576 
+Cantidad de agua de planta[2,39]       191576 
+Cantidad de agua de planta[2,40]       191576 
+Cantidad de agua de planta[2,41]       191576 
+Cantidad de agua de planta[2,42]       191576 
+Cantidad de agua de planta[2,43]       191576 
+Cantidad de agua de planta[2,44]       191576 
+Cantidad de agua de planta[2,45]       191576 
+Cantidad de agua de planta[2,46]       191576 
+Cantidad de agua de planta[2,47]       191576 
+Cantidad de agua de planta[2,48]       191576 
+Cantidad de agua de planta[2,49]       191576 
+Cantidad de agua de planta[2,50]       191576 
+Cantidad de agua de planta[2,51]       191576 
+Cantidad de agua de planta[2,52]       191576 
+Cantidad de agua de planta[2,53]       191576 
+Cantidad de agua de planta[2,54]       191576 
+Cantidad de agua de planta[2,55]       191576 
+Cantidad de agua de planta[2,56]       191576 
+Cantidad de agua de planta[2,57]       191576 
+Cantidad de agua de planta[2,58]       191576 
+Cantidad de agua de planta[2,59]       191576 
+Cantidad de agua de planta[2,60]       191576 
+Cantidad de agua de planta[2,61]       191576 
+Cantidad de agua de planta[2,62]       191576 
+Cantidad de agua de planta[2,63]       191576 
+Cantidad de agua de planta[2,64]       191576 
+Cantidad de agua de planta[2,65]       191576 
+Cantidad de agua de planta[2,66]       191576 
+Cantidad de agua de planta[2,67]       191576 
+Cantidad de agua de planta[2,68]       191576 
+Cantidad de agua de planta[2,69]       191576 
+Cantidad de agua de planta[2,70]       191576 
+Cantidad de agua de planta[2,71]       191576 
+Cantidad de agua de planta[2,72]       191576 
+Cantidad de agua de planta[2,73]       191576 
+Cantidad de agua de planta[2,74]       191576 
+Cantidad de agua de planta[2,75]       191576 
+Cantidad de agua de planta[2,76]       191576 
+Cantidad de agua de planta[2,77]       191576 
+Cantidad de agua de planta[2,78]       191576 
+Cantidad de agua de planta[2,79]       191576 
+Cantidad de agua de planta[2,80]       191576 
+Cantidad de agua de planta[2,81]       191576 
+Cantidad de agua de planta[2,82]       191576 
+Cantidad de agua de planta[2,83]       191576 
+Cantidad de agua retirada        3e+06 
+Compra de tecnologia[0,3]            1 
+Compra de tecnologia[1,3]            1 
+Uso de tecnologia en el mes[0,3,0]            1 
+Uso de tecnologia en el mes[0,3,1]            1 
+Uso de tecnologia en el mes[0,3,2]            1 
+Uso de tecnologia en el mes[0,3,3]            1 
+Uso de tecnologia en el mes[0,3,4]            1 
+Uso de tecnologia en el mes[0,3,5]            1 
+Uso de tecnologia en el mes[0,3,6]            1 
+Uso de tecnologia en el mes[0,3,7]            1 
+Uso de tecnologia en el mes[0,3,8]            1 
+Uso de tecnologia en el mes[0,3,9]            1 
+Uso de tecnologia en el mes[0,3,10]            1 
+Uso de tecnologia en el mes[0,3,11]            1 
+Uso de tecnologia en el mes[0,3,12]            1 
+Uso de tecnologia en el mes[0,3,13]            1 
+Uso de tecnologia en el mes[0,3,14]            1 
+Uso de tecnologia en el mes[0,3,15]            1 
+Uso de tecnologia en el mes[0,3,16]            1 
+Uso de tecnologia en el mes[0,3,17]            1 
+Uso de tecnologia en el mes[0,3,18]            1 
+Uso de tecnologia en el mes[0,3,19]            1 
+Uso de tecnologia en el mes[0,3,20]            1 
+Uso de tecnologia en el mes[0,3,21]            1 
+Uso de tecnologia en el mes[0,3,22]            1 
+Uso de tecnologia en el mes[0,3,23]            1 
+Uso de tecnologia en el mes[0,3,24]            1 
+Uso de tecnologia en el mes[0,3,25]            1 
+Uso de tecnologia en el mes[0,3,26]            1 
+Uso de tecnologia en el mes[0,3,27]            1 
+Uso de tecnologia en el mes[0,3,28]            1 
+Uso de tecnologia en el mes[1,3,75]            1 
+Uso proceso en algun caso[0]            1 
+Uso proceso en algun caso[1]            1 

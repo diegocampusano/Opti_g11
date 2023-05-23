@@ -3,7 +3,7 @@ from random import randint, choices, seed
 import numpy as np
 
 
-def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
+def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V3'):
     """Función que define el dominio de los conjuntos del problema.
     Variables:
         -n_ex : Número de procesos de extracción (int).
@@ -17,6 +17,7 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     """
     m = gp.Model(name=n)
     seed(20)
+    np.random.seed(20)
     ### Conjuntos ###
     
     # Procesos de extracción i in {1, ..., I}
@@ -31,9 +32,7 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     M = range(n_m)
     
     ### Parámetros ###
-    # archivo parametros Cote:
-    # https://docs.google.com/document/d/16tpIgbT18wJ0YU0W5X2hlRgIwC1qytQKJiMMTKI5OdM/edit?usp=sharing
-    # (Es una copia, no el original por lo que podría no estar actualizado)
+    
     # Costo de extraer 1000L de agua de la planta p:
     c_ag    = [np.random.normal(16507867, 16507867 * 0.05) for p in P]
     # Costo de transportar 1000L de agua desde la planta p hasta el salar.
@@ -51,7 +50,7 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     ct      = {(i, h, t): valor for i, valor in enumerate(costo_aux) for h in H for t in T}
     # Cantidad máxima de agua que se puede extraer de la planta p en un mes
     # medido en LITROS
-    cmax_ag = [np.random.normal(1000000, 1000000 * 0.05) for p in P]
+    cmax_ag = [np.random.normal(200000, 200000 * 0.05) for p in P]
     # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
     # medido en LITROS
     valores = [10000, 10000, 100000]
@@ -87,7 +86,7 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     q_ag   = m.addVars(P, T, name='Cantidad de agua de planta')
     # Cantidad de agua que saco del salar al final del horizonte de tiempo
     q_ag_s = m.addVar(name='Cantidad de agua retirada')
-    # Mes en que se inicia el proceso i con la tecnología h
+    # tiempo en que se inicia el proceso i con la tecnología h
     start  = m.addVars(I, H, name='Instante de inicio del proceso')
     
     # Estas variables son 1 si cumplen con su descripción, 0 en otro caso.
@@ -116,8 +115,8 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     m.addConstr(q_ag_s + gp.quicksum(q_ag[p, t] for p in P for t in T) 
                  >= gp.quicksum(y[i, h, t] * tech_ag[i, h] for i in I for h in H for t in T))
     # R6: Mantener secuencialidad de los procesos:
-    m.addConstrs(start[i, h] <= (start[j, h] + gp.quicksum(x[j, h] * a[j, h] for h in H)) \
-                 * order[i, j] for i in I for for j in I)
+#     m.addConstrs(start[i, h] <= (start[j, h] + x[j, h] * a[j, h]) \
+#                  * order[i, j] for h in H for i in I for j in I if i != j)
     # R7: Un proceso solo puede ocupar una tecnología a la vez
     m.addConstrs(gp.quicksum(y[i, h, t] for h in H) <= 1 for i in I for t in T)
     # R8: Se realiza un proceso a la vez
@@ -130,6 +129,8 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # R11: se deben ocupar al menos dos procesos
     m.addConstr(gp.quicksum(w[i] for i in I) >= 2)
     m.addConstrs(gp.quicksum(x[i, h] for h in H) == w[i] for i in I)
+    # R12: 
+#   m.addConstrs(start[i, h] - start [j, h] >= 1  for i in I for j in I for h in H if i < j)
     # Naturaleza de las variables:
     m.addConstr(q_ag_s >= 0)
     m.addConstrs(q_ag[p, t] >= 0 for p in P for t in T)

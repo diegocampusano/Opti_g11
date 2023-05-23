@@ -1,5 +1,6 @@
 import gurobipy as gp
 from random import randint, choices, seed
+import numpy as np
 
 
 def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
@@ -34,45 +35,49 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # https://docs.google.com/document/d/16tpIgbT18wJ0YU0W5X2hlRgIwC1qytQKJiMMTKI5OdM/edit?usp=sharing
     # (Es una copia, no el original por lo que podría no estar actualizado)
     # Costo de extraer 1000L de agua de la planta p:
-    # No se en que moneda está el valor 16507867 -Diego
-    c_ag    = [16507867 for p in P]
+    c_ag    = [np.random.normal(16507867, 16507867 * 0.05) for p in P]
     # Costo de transportar 1000L de agua desde la planta p hasta el salar.
-    # Los valores están en la misma moneda que el parámetro anterior
-    # tome el valor mas alto y el mas bajo de entre los 5 valores para generar los numeros
-    c_tr    = {(p, m): randint(1738501, 6438591) for p in P for m in M}
+    # Medido en PESOS CHILENOS
+    c_tr_list = [4089730, 2048309, 1790602, 1738501, 6438591]
+    c_tr    = {(p, m): randint(50, 500) * 1.1 * precio for p in P for m, precio in enumerate(c_tr_list)}
     # Costo de adquisición de la tecnología h para el proceso i
     # Medido en PESOS CHILENOS
-    c       = {(i, h): randint(26616344, 88133078) for i in I for h in H}
+    costo_proc = [26616344, 71784659, 88113078]
+    num = [randint(1, n_tec) for i in range(3)]
+    c       = {(i, h): np.random.normal(proceso, proceso * 0.05) if num[i] >= np.max(num) else costo_proc[i] for i, proceso in enumerate(costo_proc) for h in range(np.max(num))}
     # Costo de usar el proceso i con la tecnología h en el tiempo t
-    # # Medido en PESOS CHILENOS POR GRAMO DE LITIO
-    ct      = {(i, h, t): randint(131619, 281791) for i in I for h in H for t in T}
+    # Medido en PESOS CHILENOS POR GRAMO DE LITIO
+    costo_aux = [2000000, 67052421 + 36591183, 67052421 + 36591183]
+    ct      = {(i, h, t): valor for i, valor in enumerate(costo_aux) for h in H for t in T}
     # Cantidad máxima de agua que se puede extraer de la planta p en un mes
     # medido en LITROS
-    cmax_ag = [100000 for p in P]
+    cmax_ag = [np.random.normal(1000000, 1000000 * 0.05) for p in P]
     # Cantidad de agua mínima que requiere la tecnología h para el proceso i.
-    # No está especificado, asique dejé esta linea tal como estaba
-    tech_ag = {(i, h): 100000 for i in I for h in H}
+    # medido en LITROS
+    valores = [10000, 10000, 100000]
+    tech_ag = {(i, h): np.random.normal(proceso, proceso * 0.05) if num[i] >= np.max(num) else valores[i] for i, proceso in enumerate(valores) for h in range(np.max(num))}
     # Cantidad de agua que se retorna al salar al terminar el proceso con
     # la tecnología h en el tiempo t.
     # medido en LITROS
-    ret_ag  = {(i, h, t): randint(0, 4780000000) for i in I for h in H for t in T}
+    ret_ag  = {(i, h, t): np.random.normal(100000) for i in I for h in H for t in T}
     # Cantidad de carbonato de litio que produce el proceso i con la tecnología h
-    # medido en TONELADAS
-    cl      = {(i, h): randint(1775, 78182) for i in I for h in H}
+    # medido en TONELADAS DE LiCO3
+    valor_proceso = [78182*0.15, 78182*0.15, 78182*0.7]
+    cl      = {(i, h): np.random.normal(valor, valor*0.05) for i, valor in enumerate(valor_proceso) for h in H}
     # Huella ambiental del proceso i con la tecnología h
     # medido en KILOGRAMOS (de CO2) POR TONELADA DE CARBONATO DE LITIO
-    ha      = {(i, h): 4022 for i in I for h in H}
+    ha      = {(i, h): np.random.normal(4022, 4022*0.05) for i in I for h in H}
     # Huella ambiental máxima que puedo liberar al terminar el horizonte de tiempo.
     # medido en KILOGRAMOS (de CO2) POR TONELADA DE CARBONATO DE LITIO
     ha_max  = 6650 * t_mes
     # Demanda total del litio al fin del horizonte de tiempo
     # medido en TONELADAS
-    dt      = 323000
+    dt      = 343981 + 5034
     # Tiempo que demora una iteración del proceso i en estar listo con la tecnología h.
     # medido en MESES
-    a       = [randint(12, 18) for i in I for h in H]
+    a       = {(i, h): randint(12, 18) for i in I for h in H}
     # Orden de procesos, 1 si el proceso i debe ocurrir antes del proceso j
-    order   = {(i, j): choices([0, 1], [.7, .3])[0] for i in I for j in I if i != j}
+    order   = {(i, j): 1 if i < j else 0 for i in I for j in I}
     
     ### Variables ###
     
@@ -94,7 +99,8 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     y = m.addVars(I, H, T, vtype=gp.GRB.BINARY, name='Uso de tecnologia en el mes')
     # Variable binaria que indica si uso el transporte m para agua de la planta p
     z = m.addVars(P, M, vtype=gp.GRB.BINARY, name='Uso de transporte de agua')
-    
+    # Variable binaria que indica si el proceso i es utilizado
+    w = m.addVars(I, vtype=gp.GRB.BINARY, name='Uso proceso en algun caso')
     ### Restricciones ###
     m.update()
     
@@ -110,8 +116,8 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     m.addConstr(q_ag_s + gp.quicksum(q_ag[p, t] for p in P for t in T) 
                  >= gp.quicksum(y[i, h, t] * tech_ag[i, h] for i in I for h in H for t in T))
     # R6: Mantener secuencialidad de los procesos:
-#     m.addConstrs(start[i, h] <= (start[j, h] + gp.quicksum(x[j, h] * a[j, h] for h in H)) \
-#                  * order[i, j] for i in I for for j in I)
+    m.addConstrs(start[i, h] <= (start[j, h] + gp.quicksum(x[j, h] * a[j, h] for h in H)) \
+                 * order[i, j] for i in I for for j in I)
     # R7: Un proceso solo puede ocupar una tecnología a la vez
     m.addConstrs(gp.quicksum(y[i, h, t] for h in H) <= 1 for i in I for t in T)
     # R8: Se realiza un proceso a la vez
@@ -119,6 +125,11 @@ def modelador(n_ex, n_tec, t_mes, n_pl, n_m, n='V1'):
     # R9: Relación entre blabla ver informe
     m.addConstrs(gp.quicksum(y[i, h, t] for t in T) <= 500000 * x[i, h] for i in I for h in H)
     m.addConstrs(gp.quicksum(y[i, h, t] for t in T) >= x[i, h] for i in I for h in H)
+    # R10: el retorno de agua tiene que ser igual al agua sacada de las plantas menos el agua utilizada por los procesos
+    m.addConstrs(gp.quicksum(q_ag[p, t] - tech_ag[i, h] - ret_ag[i, h, t] for p in P for i in I for h in H) >= 0 for t in T)
+    # R11: se deben ocupar al menos dos procesos
+    m.addConstr(gp.quicksum(w[i] for i in I) >= 2)
+    m.addConstrs(gp.quicksum(x[i, h] for h in H) == w[i] for i in I)
     # Naturaleza de las variables:
     m.addConstr(q_ag_s >= 0)
     m.addConstrs(q_ag[p, t] >= 0 for p in P for t in T)

@@ -15,4 +15,4 @@ def main(n_ex, n_tec, t_mes, n_pl, n_m, n):
     return
     
 if __name__ == "__main__":
-    main(n_ex=5, n_tec=5, t_mes=36, n_pl=3, n_m=3, n='Restricciones Entrega 2 V1')
+    main(n_ex=3, n_tec=4, t_mes=84, n_pl=3, n_m=5, n='Restricciones Entrega 2 V1')
